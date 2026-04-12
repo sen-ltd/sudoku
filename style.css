@@ -229,6 +229,10 @@ main {
   z-index: 10;
 }
 
+.overlay[hidden] {
+  display: none;
+}
+
 .overlay p {
   font-size: 22px;
   font-weight: 700;
