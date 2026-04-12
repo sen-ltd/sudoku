@@ -58,3 +58,10 @@ MIT. See [LICENSE](./LICENSE).
 ---
 
 Part of the [SEN portfolio series](https://sen.ltd/portfolio/)
+
+<!-- sen-publish:links -->
+## Links
+
+- 🌐 Demo: https://sen.ltd/portfolio/sudoku/
+- 📝 dev.to: https://dev.to/sendotltd/building-a-sudoku-puzzle-game-with-constraint-propagation-backtracking-and-a-hint-engine-that-297j
+<!-- /sen-publish:links -->
