@@ -1,0 +1,332 @@
+:root {
+  --bg: #0f1115;
+  --panel: #171a21;
+  --panel-2: #1e222b;
+  --fg: #e6e8ec;
+  --muted: #8a93a6;
+  --accent: #f5c26b;
+  --accent-2: #7cc4ff;
+  --border: #272b35;
+  --green: #9ae6b4;
+  --red: #fca5a5;
+  --grid-border: #4a5060;
+  --cell-bg: #1e222b;
+  --cell-given: #e6e8ec;
+  --cell-user: #7cc4ff;
+  --cell-selected: rgba(245, 194, 107, 0.18);
+  --cell-conflict: rgba(252, 165, 165, 0.22);
+  --cell-hint: rgba(154, 230, 180, 0.18);
+  --cell-hint-target: rgba(154, 230, 180, 0.35);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--fg);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header --- */
+header {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 24px 0;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.timer-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.timer-box strong {
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  font-size: 18px;
+}
+
+#subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.top-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+button.primary {
+  background: var(--accent);
+  color: #0f1115;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+button.primary:hover { opacity: 0.85; }
+
+button.secondary {
+  background: var(--panel-2);
+  color: var(--accent-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+button.secondary:hover { opacity: 0.85; }
+
+.group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+select {
+  background: var(--panel);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* --- Main --- */
+main {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 24px;
+  flex: 1;
+}
+
+/* --- Board --- */
+.board-wrap {
+  position: relative;
+  aspect-ratio: 1;
+  max-width: 468px;
+  margin: 0 auto;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--grid-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cell-bg);
+  color: var(--cell-user);
+  font-size: clamp(16px, 4.5vw, 24px);
+  font-weight: 500;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.1s;
+  outline: none;
+  font-family: inherit;
+}
+
+.cell:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.cell.given {
+  color: var(--cell-given);
+  font-weight: 700;
+}
+
+.cell.selected {
+  background: var(--cell-selected);
+}
+
+.cell.conflict {
+  background: var(--cell-conflict);
+  color: var(--red);
+}
+
+.cell.hint-highlight {
+  background: var(--cell-hint);
+}
+
+.cell.hint-target {
+  background: var(--cell-hint-target);
+  outline: 2px solid var(--green);
+  outline-offset: -2px;
+}
+
+/* 3×3 box borders */
+.cell.border-top { border-top: 2px solid var(--grid-border); }
+.cell.border-left { border-left: 2px solid var(--grid-border); }
+.cell.border-bottom { border-bottom: 2px solid var(--grid-border); }
+.cell.border-right { border-right: 2px solid var(--grid-border); }
+
+/* --- Overlay --- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: rgba(15, 17, 21, 0.88);
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.overlay p {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.overlay .overlay-time {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.overlay .overlay-time strong {
+  color: var(--fg);
+}
+
+/* --- Hint message --- */
+.hint-message {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.hint-message.hint {
+  background: rgba(154, 230, 180, 0.12);
+  color: var(--green);
+  border: 1px solid rgba(154, 230, 180, 0.25);
+}
+
+.hint-message.info {
+  background: rgba(124, 196, 255, 0.12);
+  color: var(--accent-2);
+  border: 1px solid rgba(124, 196, 255, 0.25);
+}
+
+.hint-message.error {
+  background: rgba(252, 165, 165, 0.12);
+  color: var(--red);
+  border: 1px solid rgba(252, 165, 165, 0.25);
+}
+
+/* --- Numpad --- */
+.numpad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin-top: 16px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.numpad-btn {
+  background: var(--panel);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 12px 0;
+  cursor: pointer;
+  transition: background 0.1s;
+  font-family: inherit;
+}
+
+.numpad-btn:hover {
+  background: var(--panel-2);
+}
+
+.numpad-btn.numpad-clear {
+  color: var(--red);
+}
+
+/* --- Footer --- */
+footer {
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 24px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* --- Responsive --- */
+@media (max-width: 480px) {
+  header, main, footer {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  h1 { font-size: 24px; }
+
+  .top-controls { gap: 6px; }
+
+  .numpad {
+    max-width: 100%;
+  }
+}

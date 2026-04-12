@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>数独</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="title-row">
+        <h1 id="title">数独</h1>
+        <div class="timer-box">
+          <span id="timer-label"></span>
+          <strong id="timer-value">00:00</strong>
+        </div>
+      </div>
+      <p id="subtitle"></p>
+      <div class="top-controls">
+        <button id="new-game-btn" type="button" class="primary"></button>
+        <button id="hint-btn" type="button" class="secondary"></button>
+        <div class="group">
+          <label id="diff-label" for="diff-select"></label>
+          <select id="diff-select">
+            <option value="easy"></option>
+            <option value="medium" selected></option>
+            <option value="hard"></option>
+          </select>
+        </div>
+        <div class="group">
+          <label id="lang-label" for="lang-select"></label>
+          <select id="lang-select">
+            <option value="ja">日本語</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="board-wrap">
+        <div class="board" id="board" role="grid" aria-label="Sudoku"></div>
+        <div class="overlay" id="overlay" hidden>
+          <p id="overlay-message"></p>
+          <p class="overlay-time">
+            <span id="overlay-time-label"></span>:
+            <strong id="overlay-time-value"></strong>
+          </p>
+          <button id="overlay-btn" type="button" class="primary"></button>
+        </div>
+      </section>
+      <div id="hint-message" class="hint-message" hidden></div>
+      <div class="numpad" id="numpad"></div>
+    </main>
+
+    <footer>
+      <span id="footer"></span>
+    </footer>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
