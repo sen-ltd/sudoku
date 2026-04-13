@@ -16,18 +16,21 @@ const state = {
   timer: 0,          // seconds
   timerInterval: null,
   solved: false,
+  highlightSame: true,
 };
 
 function readQuery() {
   const p = new URLSearchParams(location.search);
   if (p.get('lang') === 'en') state.lang = 'en';
   if (['easy', 'medium', 'hard'].includes(p.get('d'))) state.difficulty = p.get('d');
+  if (p.get('hl') === '0') state.highlightSame = false;
 }
 
 function writeQuery() {
   const p = new URLSearchParams();
   p.set('lang', state.lang);
   p.set('d', state.difficulty);
+  if (!state.highlightSame) p.set('hl', '0');
   history.replaceState(null, '', '?' + p);
 }
 
@@ -47,6 +50,8 @@ function applyLang() {
   sel.options[0].textContent = m.easy;
   sel.options[1].textContent = m.medium;
   sel.options[2].textContent = m.hard;
+
+  $('highlight-label').textContent = m.highlight;
 
   $('lang-select').value = state.lang;
   $('diff-select').value = state.difficulty;
@@ -121,6 +126,13 @@ function renderBoard() {
 
     if (i === state.selected) {
       cell.classList.add('selected');
+    }
+
+    if (state.highlightSame && state.selected >= 0) {
+      const selectedDigit = state.board[state.selected];
+      if (selectedDigit !== 0 && state.board[i] === selectedDigit) {
+        cell.classList.add('same-digit');
+      }
     }
 
     cell.addEventListener('click', () => selectCell(i));
@@ -283,6 +295,14 @@ function init() {
     state.difficulty = e.target.value;
     writeQuery();
     newGame();
+  });
+
+  const hlToggle = $('highlight-toggle');
+  hlToggle.checked = state.highlightSame;
+  hlToggle.addEventListener('change', (e) => {
+    state.highlightSame = e.target.checked;
+    writeQuery();
+    renderBoard();
   });
 
   $('new-game-btn').addEventListener('click', newGame);

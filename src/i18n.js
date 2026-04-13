@@ -14,6 +14,7 @@ export const MESSAGES = {
     time: 'クリアタイム',
     noHint: 'ヒントが見つかりません。もう少し自分で考えてみましょう！',
     invalidBoard: '盤面にエラーがあります。赤くなっているセルを確認してください。',
+    highlight: 'ハイライト',
     footer: 'SEN Portfolio #033 — vanilla JS, ゼロ依存',
   },
   en: {
@@ -31,6 +32,7 @@ export const MESSAGES = {
     time: 'Your time',
     noHint: 'No hint found. Keep trying on your own!',
     invalidBoard: 'There are errors on the board. Check the highlighted cells.',
+    highlight: 'Highlight',
     footer: 'SEN Portfolio #033 — vanilla JS, zero dependencies',
   },
 };
