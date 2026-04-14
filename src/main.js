@@ -140,6 +140,7 @@ function renderBoard() {
   }
 
   highlightConflicts();
+  updateNumpadDisabled();
 }
 
 function selectCell(index) {
@@ -152,6 +153,13 @@ function placeDigit(digit) {
   if (state.solved) return;
   if (state.selected < 0) return;
   if (state.puzzle[state.selected] !== 0) return;
+
+  // Block placing a digit that already has all 9 on the board
+  // (unless we're replacing an existing copy of that same digit in this cell)
+  if (state.board[state.selected] !== digit) {
+    const counts = digitCounts();
+    if (counts[digit] >= 9) return;
+  }
 
   state.board[state.selected] = digit;
   clearHintMessage();
@@ -240,6 +248,8 @@ function clearHintMessage() {
   el.hidden = true;
 }
 
+const numpadDigitBtns = {}; // digit (1-9) → HTMLButtonElement
+
 function buildNumpad() {
   const pad = $('numpad');
   for (let d = 1; d <= 9; d++) {
@@ -249,6 +259,7 @@ function buildNumpad() {
     btn.textContent = d;
     btn.addEventListener('click', () => placeDigit(d));
     pad.appendChild(btn);
+    numpadDigitBtns[d] = btn;
   }
   const clearBtn = document.createElement('button');
   clearBtn.type = 'button';
@@ -256,6 +267,28 @@ function buildNumpad() {
   clearBtn.textContent = '×';
   clearBtn.addEventListener('click', clearCell);
   pad.appendChild(clearBtn);
+}
+
+/** Count how many times each digit 1-9 appears on the current board. */
+function digitCounts() {
+  const counts = Array(10).fill(0);
+  for (let i = 0; i < 81; i++) {
+    const v = state.board[i];
+    if (v >= 1 && v <= 9) counts[v]++;
+  }
+  return counts;
+}
+
+/** Gray out numpad buttons for digits that have all 9 placed. */
+function updateNumpadDisabled() {
+  const counts = digitCounts();
+  for (let d = 1; d <= 9; d++) {
+    const btn = numpadDigitBtns[d];
+    if (!btn) continue;
+    const done = counts[d] >= 9;
+    btn.disabled = done;
+    btn.classList.toggle('done', done);
+  }
 }
 
 function handleKeydown(e) {

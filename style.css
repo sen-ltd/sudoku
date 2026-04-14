@@ -314,6 +314,19 @@ main {
   color: var(--red);
 }
 
+.numpad-btn.done,
+.numpad-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+  color: var(--border);
+  background: var(--panel);
+}
+
+.numpad-btn.done:hover,
+.numpad-btn:disabled:hover {
+  background: var(--panel);
+}
+
 /* --- Footer --- */
 footer {
   max-width: 520px;
